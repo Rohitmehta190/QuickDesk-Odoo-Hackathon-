@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickDesk - Help Desk System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" class="app-container">
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading-screen glass-panel">
+            <div class="loading-content">
+                <div class="glass-logo">🎯</div>
+                <h1 class="loading-title">QuickDesk</h1>
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+
+        <!-- Login/Register Screen -->
+        <div id="authScreen" class="auth-screen hidden">
+            <div class="auth-container glass-panel">
+                <div class="auth-header">
+                    <div class="logo">🎯</div>
+                    <h1>QuickDesk</h1>
+                    <p>Professional Help Desk System</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control glass-input" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control glass-input" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary glass-btn">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control glass-input" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control glass-input" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control glass-input" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select class="form-control glass-input" id="registerRole" required>
+                            <option value="">Select Role</option>
+                            <option value="end-user">End User</option>
+                            <option value="support-agent">Support Agent</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn--primary glass-btn">Register</button>
+                </form>
+
+                <div class="demo-accounts">
+                    <h4>Demo Accounts:</h4>
+                    <div class="demo-list">
+                        <button class="demo-btn" data-email="admin@quickdesk.com" data-password="admin123">Admin</button>
+                        <button class="demo-btn" data-email="agent@quickdesk.com" data-password="agent123">Agent</button>
+                        <button class="demo-btn" data-email="user@quickdesk.com" data-password="user123">User</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="mainApp" class="main-app hidden">
+            <!-- Navigation -->
+            <nav class="navbar glass-panel">
+                <div class="nav-brand">
+                    <div class="logo">🎯</div>
+                    <span>QuickDesk</span>
+                </div>
+                <div class="nav-items">
+                    <div class="user-info">
+                        <span id="userAvatar" class="user-avatar">👤</span>
+                        <span id="userName">User</span>
+                    </div>
+                    <button id="logoutBtn" class="btn btn--outline glass-btn">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Sidebar -->
+            <aside class="sidebar glass-panel">
+                <div class="sidebar-content">
+                    <div class="nav-links" id="navLinks">
+                        <!-- Dynamic navigation based on role -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard View -->
+                <div id="dashboardView" class="view">
+                    <div class="page-header">
+                        <h2>Dashboard</h2>
+                        <div class="page-actions">
+                            <button id="createTicketBtn" class="btn btn--primary glass-btn">
+                                ➕ Create Ticket
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon">🎫</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="totalTickets">0</div>
+                                <div class="stat-label">Total Tickets</div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon">🔄</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="openTickets">0</div>
+                                <div class="stat-label">Open Tickets</div>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-info">
+                                <div class="stat-number" id="resolvedTickets">0</div>
+                                <div class="stat-label">Resolved</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tickets-section">
+                        <div class="section-header">
+                            <h3>Recent Tickets</h3>
+                            <div class="filters">
+                                <input type="text" class="form-control glass-input search-input" id="searchInput" placeholder="Search tickets...">
+                                <select class="form-control glass-input" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="open">Open</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                    <option value="closed">Closed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="tickets-grid" id="ticketsGrid">
+                            <!-- Dynamic ticket cards -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Management View (Admin only) -->
+                <div id="usersView" class="view hidden">
+                    <div class="page-header">
+                        <h2>Users Management</h2>
+                    </div>
+                    <div class="users-grid" id="usersGrid">
+                        <!-- Dynamic user cards -->
+                    </div>
+                </div>
+
+                <!-- Categories Management View (Admin only) -->
+                <div id="categoriesView" class="view hidden">
+                    <div class="page-header">
+                        <h2>Categories Management</h2>
+                        <button id="createCategoryBtn" class="btn btn--primary glass-btn">
+                            ➕ Add Category
+                        </button>
+                    </div>
+                    <div class="categories-grid" id="categoriesGrid">
+                        <!-- Dynamic category cards -->
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Create Ticket Modal -->
+        <div id="createTicketModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h3>Create New Ticket</h3>
+                    <button class="close-btn" data-modal="createTicketModal">✕</button>
+                </div>
+                <form id="createTicketForm" class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-control glass-input" id="ticketSubject" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select class="form-control glass-input" id="ticketCategory" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Priority</label>
+                        <select class="form-control glass-input" id="ticketPriority" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control glass-input" id="ticketDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Attachments</label>
+                        <div class="file-upload-area glass-panel">
+                            <input type="file" id="ticketAttachments" multiple style="display: none;">
+                            <div class="upload-placeholder">
+                                📎 Click to upload files or drag and drop
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button class="btn btn--outline glass-btn" data-modal="createTicketModal">Cancel</button>
+                    <button class="btn btn--primary glass-btn" form="createTicketForm" type="submit">Create Ticket</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ticket Details Modal -->
+        <div id="ticketDetailsModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content glass-panel large-modal">
+                <div class="modal-header">
+                    <h3 id="ticketDetailsTitle">Ticket Details</h3>
+                    <button class="close-btn" data-modal="ticketDetailsModal">✕</button>
+                </div>
+                <div class="modal-body ticket-details">
+                    <div class="ticket-meta">
+                        <div class="meta-item">
+                            <label>Status:</label>
+                            <select id="ticketStatus" class="form-control glass-input status-select">
+                                <option value="open">Open</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="resolved">Resolved</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="meta-item">
+                            <label>Priority:</label>
+                            <span id="ticketPriorityDisplay" class="priority-badge"></span>
+                        </div>
+                        <div class="meta-item">
+                            <label>Assigned To:</label>
+                            <select id="ticketAssignee" class="form-control glass-input">
+                                <option value="">Unassigned</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ticket-description">
+                        <h4>Description</h4>
+                        <p id="ticketDescriptionText"></p>
+                    </div>
+                    <div class="ticket-comments">
+                        <h4>Comments</h4>
+                        <div class="comments-list" id="commentsList">
+                            <!-- Dynamic comments -->
+                        </div>
+                        <form id="addCommentForm" class="add-comment-form">
+                            <textarea class="form-control glass-input" id="commentText" placeholder="Add a comment..." rows="3"></textarea>
+                            <button type="submit" class="btn btn--primary glass-btn">Add Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Category Modal -->
+        <div id="createCategoryModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content glass-panel">
+                <div class="modal-header">
+                    <h3>Create New Category</h3>
+                    <button class="close-btn" data-modal="createCategoryModal">✕</button>
+                </div>
+                <form id="createCategoryForm" class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control glass-input" id="categoryName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control glass-input" id="categoryDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Color</label>
+                        <input type="color" class="form-control glass-input" id="categoryColor" value="#3B82F6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Icon (Emoji)</label>
+                        <input type="text" class="form-control glass-input" id="categoryIcon" placeholder="🔧" maxlength="2">
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button class="btn btn--outline glass-btn" data-modal="createCategoryModal">Cancel</button>
+                    <button class="btn btn--primary glass-btn" form="createCategoryForm" type="submit">Create Category</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
